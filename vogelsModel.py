@@ -13,19 +13,16 @@ def fib(n):
         return fib(n-1)+fib(n-2)
 
 theta = 137.508
+a = 5
+b = 0.7
 c = 1
 #radius = c*theta**0.5
-r = 0
-g = 0
-b = 0
-for radius in range(500):
-    r = radius/500.0
-    g = radius/500.0
-    b = radius/500.0
-    bob.pencolor((r,g,b))
+
+for r in range(500):
+    radius = a + b*r**(1/c)
     bob.dot()
     bob.penup()
     bob.left(theta)
-    bob.forward(c*radius)
+    bob.forward(radius)
 
 turtle.done()
