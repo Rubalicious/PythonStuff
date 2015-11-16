@@ -1,5 +1,6 @@
 import unittest
 import C4
+import sys
 
 class testC4Game(unittest.TestCase):
 
@@ -223,6 +224,64 @@ class testC4Game(unittest.TestCase):
     def test_four_on_a_diagonal(self):
         assert not self.game.four_on_a_diagonal()
 
+    @classmethod
+    def test_a_game(self):
+        print 'Testing the game'
+
+        # print self.game.current_player
+        self.game.player_move(0) # player 1
+        assert not self.game.has_won(self.game.current_player)
+        
+        # print self.game.current_player
+        self.game.player_move(1) # player 2
+        print self.game.current_player
+        assert not self.game.has_won(self.game.current_player)
+        
+        print self.game.current_player
+        self.game.player_move(2)
+        assert not self.game.has_won(self.game.current_player)
+        
+        self.game.player_move(3)
+        assert not self.game.has_won(self.game.current_player)
+        
+        self.game.player_move(1)
+        assert not self.game.has_won(self.game.current_player)
+        
+        self.game.player_move(2)
+        assert not self.game.has_won(self.game.current_player)
+        
+        self.game.player_move(0)
+        assert not self.game.has_won(self.game.current_player)
+        self.game.player_move(1)
+        assert not self.game.has_won(self.game.current_player)
+        self.game.player_move(0)
+        assert not self.game.has_won(self.game.current_player)
+        self.game.player_move(0)
+        self.game.__repr__()
+
+##        Player 2 won!
+##        Board move: 10
+##        0 0 0 0 0 0 0
+##        0 0 0 0 0 0 0
+##        2 0 0 0 0 0 0
+##        1 2 0 0 0 0 0
+##        1 1 2 0 0 0 0
+##        1 2 1 2 0 0 0
+##        -------------
+        
+        assert self.game.has_won(2)
+        print self.game.has_won(2)
+        print self.game.has_won(1)
+
+    # @unittest.expectedFailure("This is a bug")
+    def test_bug_001_game_quits_after_second_move(self):
+        self.game.player_move(3)
+        assert not self.game.has_won(1)
+        self.game.player_move(2)
+        assert not self.game.has_won(2)
+
+def main(argv):
+    unittest.main(argv=argv, verbosity=0, failfast=False)
 
 if __name__=='__main__':
     unittest.main()
