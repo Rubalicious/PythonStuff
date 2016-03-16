@@ -15,13 +15,18 @@ class C4Game():
         self.current_player = 1
 
     def __repr__(self):
-        print "\nBoard move: ", self.move_count
+        print "\n\tBoard move: ", self.move_count
         for row in self.board:
+            print '\t',
             for entry in row:
                 print entry,
             print
-        print '-------------\n'
+        print '\t-------------\n'
 
+    def move_sequence(self, sequence):
+        for x in sequence:
+            self.player_move(x)
+        
     def player_move(self, col):
         token = self.current_player
         i = 1
@@ -31,7 +36,6 @@ class C4Game():
                 break
             i +=1
         self.board[-i][col] = token
-##        print "number of spaces taken column ",col,": ",i
         self.move_count += 1
         self.next_player()
 
@@ -42,6 +46,30 @@ class C4Game():
         elif self.current_player == 2:
             self.current_player = 1 
             return 1
+    
+    def four_in_a_row(self, row, player=1):
+        v1 = [player for i in xrange(4)]
+        for entry in xrange(len(row)-3):
+            v = list(row[entry:entry+4])
+            if v == v1:
+                return True
+        return False
+
+    def four_on_a_diagonal(self, a, player=1):
+        v1 = [player for i in xrange(4)]
+        x,y = 6,7
+
+        a = np.array(a)
+        diags = [a[::-1,:].diagonal(i) for i in xrange(x+1+3, y-3)]
+        diags.extend(a.diagonal(i) for i in xrange(y-1-3, -x+3,-1))
+
+        for el in diags:
+            for entry in xrange(len(el)-3):
+                v = list(el[entry:entry+4])
+                if v == v1:
+                    return True
+
+        return False    
 
     def has_won(self, player):
         won = False
@@ -54,71 +82,66 @@ class C4Game():
         # checking if there exists 4 tokens in any column
         transpose = zip(*self.board)
         for row in transpose:
-            if self.four_in_a_col(row, player):
+            if self.four_in_a_row(row, player):
                 won = True
         
         # checking if there exists 4 tokens in a diagonal
-                
-        if self.four_on_a_diagonal(player): won = True
+        if self.four_on_a_diagonal(self.board, player): won = True
         
-
-        return won
-    
-    def four_in_a_row(self, row, player=1):
-        v1 = [player for i in xrange(4)]
-        for entry in xrange(4):
-            v = row[entry:entry+4]
-            if v == v1 and player in v1:
-                return True
-        return False
-
-    def four_in_a_col(self, col, player=1):
-        v1 = tuple([player for i in xrange(4)])
-        for entry in xrange(3):
-            v = col[entry:entry+4]
-            if v == v1 and player in v1:
-                return True
-        return False
-
-    def four_on_a_diagonal(self, player=1):
-        v1 = tuple([player for i in xrange(4)])
-        x,y = 6,7
-        a = np.arange(x*y).reshape(x,y)
-        for i in xrange(x):
-            for j in xrange(y):
-                a[i][j] = self.board[i][j]
-
-        diags = [a[::-1,:].diagonal(i) for i in xrange(-a.shape[0]+1, a.shape[1])]
-        diags.extend(a.diagonal(i) for i in xrange(a.shape[1]-1, -a.shape[0],-1))
-##        diags = [el for el in diags if len(el) >= 4]
-        for el in diags:
-            if v1 in el and player in v1:
-                return True
-##        pprint.pprint( [n.tolist() for n in diags] ) 
-        return False            
+        return won        
         
                 
 
 def main():
     game = C4Game()
-    # game.__repr__()
     player = game.current_player
-    # end = False
-    while game.has_won(player) is False:
+
+    # Welcome to the game
+    print 
+    print '#######################################'
+    print '             CONNECT 4'
+    print '#######################################'
+    print 'by Ruby Abrams v 1.0'
+
+    while not game.has_won(game.current_player):
+
         if game.move_count > 41:
             print "It's a tie! Great game!"
             break
+
+        # User interface
         game.__repr__()
-        print "It is your turn, player", player
+        print "It is player %d\'s turn"%game.current_player
         col_num = raw_input("in which column will you place a token? ")
+
+        # Edge cases
         if col_num == 'q': 
             break
+        elif not col_num.isdigit():
+            print ''
+            print '##########################################'
+            print '   ERROR: not a digit entry. try again.'
+            print '##########################################'
+            continue
+        elif int(col_num) not in range(7):
+            print ''
+            print '##########################################'
+            print '   ERROR: not a valid entry. try again.'
+            print '##########################################'
+            continue
+
+        if game.board[0][int(col_num)]:
+            print ''
+            print '##########################################'
+            print '      ERROR: column full. try again'
+            print '##########################################'
+            continue
+
+        # One person's turn
         game.player_move(int(col_num))
-        if game.has_won(player): end = True
-        player = game.next_player()
         
-    print "Game Over!"
+    
+    print "Game Over! Player %d won!"%game.current_player
 
-
-main()
-# print "imported"
+if __name__ == '__main__':
+    main()

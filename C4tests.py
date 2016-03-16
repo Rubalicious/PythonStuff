@@ -1,23 +1,17 @@
 import unittest
-import C4
+from C4 import C4Game
 import sys
 
 class testC4Game(unittest.TestCase):
 
     @classmethod
     def setUp(self):
-        self.game = C4.C4Game()
+        self.game = C4Game()
         
     @classmethod
     def test_has_won_with_four_horizontal_tokens_on_first_row(self):
-        self.game.player_move(1)
-        self.game.player_move(1)
-        self.game.player_move(2)
-        self.game.player_move(2)
-        self.game.player_move(3)
-        self.game.player_move(3)
-        self.game.player_move(4)
-        self.game.__repr__()
+
+        self.game.move_sequence([1,1,2,2,3,3,4])
 
 ##        Player 1 won!
 ##        Board move:  7
@@ -30,26 +24,12 @@ class testC4Game(unittest.TestCase):
 ##        -------------
 
         assert self.game.has_won(1)
-        print self.game.has_won(1)
-        print self.game.has_won(2)
+
 
     @classmethod
     def test_has_won_with_four_horizontal_tokens_on_second_row(self):
-        self.game.player_move(2)
-        self.game.player_move(3)
-        self.game.player_move(4)
-        self.game.player_move(5)
-        self.game.player_move(6)
 
-        self.game.player_move(5)
-        self.game.player_move(5)
-        self.game.player_move(2)
-        self.game.player_move(2)
-        self.game.player_move(3)
-        self.game.player_move(3)
-        self.game.player_move(4)
-        
-        self.game.__repr__()
+        self.game.move_sequence([2,3,4,5,6,5,5,2,2,3,3,4])
 
 ##        Player 2 won!
 ##        Board move:  12
@@ -62,20 +42,11 @@ class testC4Game(unittest.TestCase):
 ##        -------------
 
         assert self.game.has_won(2), "This returns false"
-        print self.game.has_won(2)
-        print self.game.has_won(1)
 
     @classmethod
     def test_has_won_with_four_vertical_tokens_in_any_column(self):
-        self.game.player_move(3)
-        self.game.player_move(4)
-        self.game.player_move(3)
-        self.game.player_move(4)
-        self.game.player_move(3)
-        self.game.player_move(4)
-        self.game.player_move(3)
 
-        self.game.__repr__()
+        self.game.move_sequence([3,4,3,4,3,4,3])
 
 ##        Player 1 won!
 ##        Board move:  7
@@ -88,22 +59,11 @@ class testC4Game(unittest.TestCase):
 ##        -------------
 
         assert self.game.has_won(1)
-        print self.game.has_won(1)
-        print self.game.has_won(2)
 
     @classmethod
     def test_has_won_with_four_vertical_tokens_on_second_row(self):
-        self.game.player_move(4)
-        self.game.player_move(3)
-        self.game.player_move(3)
-        self.game.player_move(4)
-        self.game.player_move(3)
-        self.game.player_move(4)
-        self.game.player_move(3)
-        self.game.player_move(4)
-        self.game.player_move(3)
 
-        self.game.__repr__()
+        self.game.move_sequence([4,3,3,4,3,4,3,4,3])
 
 ##        Player 1 won!
 ##        Board move:  9
@@ -116,23 +76,12 @@ class testC4Game(unittest.TestCase):
 ##        -------------
 
         assert self.game.has_won(1)
-        print self.game.has_won(1)
-        print self.game.has_won(2)
 
 
     @classmethod
     def test_has_won_with_four_on_a_diagonal(self):
-        self.game.player_move(0)
-        self.game.player_move(1)
-        self.game.player_move(2)
-        self.game.player_move(3)
-        self.game.player_move(1)
-        self.game.player_move(2)
-        self.game.player_move(0)
-        self.game.player_move(1)
-        self.game.player_move(0)
-        self.game.player_move(0)
-        self.game.__repr__()
+
+        self.game.move_sequence([0,1,2,3,1,2,0,1,0,0])
 
 ##        Player 2 won!
 ##        Board move: 10
@@ -145,21 +94,12 @@ class testC4Game(unittest.TestCase):
 ##        -------------
         
         assert self.game.has_won(2)
-        print self.game.has_won(2)
-        print self.game.has_won(1)
+
 
     @classmethod
     def test_that_it_fails(self):
-        self.game.player_move(0)
-        self.game.player_move(1)
-        self.game.player_move(2)
-        self.game.player_move(3)
-        self.game.player_move(1)
-        self.game.player_move(2)
-        self.game.player_move(0)
-        self.game.player_move(1)
-        self.game.player_move(0)
-        self.game.__repr__()
+
+        self.game.move_sequence([0,1,2,3,1,2,0,1,0])
 
 ##        Player 2 won!
 ##        Board move: 10
@@ -171,12 +111,12 @@ class testC4Game(unittest.TestCase):
 ##        1 2 1 2 0 0 0
 ##        -------------
         
-        assert self.game.has_won(2)
+        assert not self.game.has_won(2)
 
     @classmethod
     def test_four_in_a_row(self):
 
-        print "==========test four in a row============"
+        # print "==========test four in a row============"
         
         v1 = [0,0,0,1,1,1,1]    # True
         v2 = [0,1,0,1,1,1,1]    # True
@@ -186,58 +126,55 @@ class testC4Game(unittest.TestCase):
         v6 = [2,2,2,2,0,0,0]    # True
 
         assert self.game.four_in_a_row(v1) 
-##        print v1
         assert self.game.four_in_a_row(v2) 
-##        print v2
-##        self.assertFalse( C4.C4Game.game.four_in_a_row(v3) )
-##        print v3
         assert self.game.four_in_a_row(v4) 
-##        print v4
         assert self.game.four_in_a_row(v5) 
-##        print v5
         assert self.game.four_in_a_row(v6,2) 
-##        print v6
+
 
 
     @classmethod
-    def test_four_in_a_col(self):
+    def test_more_four_in_a_row(self):
 
-        print "==========test four in a col============"
+        # print "==========test four in a col============"
 
         M = [(0,0,0,0,0,0,1),
              (0,0,0,0,0,0,1),
              (0,0,0,0,0,1,1),
              (2,0,0,0,2,2,1),
-             (1,2,2,1,2,2,2),
              (1,1,1,2,2,1,1),
              (1,2,2,1,2,1,2)]
         self.board = M
 
         transpose = zip(*M)
-        v1 = tuple([1 for i in range(4)])
-        v2 = tuple([2 for i in range(4)])
-        for j in range(6):
-            if (v1 or v2) in transpose[j]:
-                assert True
+        # v1 = [1 for i in range(4)]
+        # v2 = [2 for i in range(4)]
+        
+        assert self.game.four_in_a_row(transpose[6])
+        assert not self.game.four_in_a_row(transpose[5])
+        assert not self.game.four_in_a_row(transpose[4])
+        assert not self.game.four_in_a_row(transpose[3])
+        assert not self.game.four_in_a_row(transpose[2])
+        assert not self.game.four_in_a_row(transpose[1])
+        assert not self.game.four_in_a_row(transpose[0])
 
     @classmethod
-    def test_four_on_a_diagonal(self):
-        assert not self.game.four_on_a_diagonal()
+    def test_four_on_a_diagonal_with_empty_board(self):
+        # self.game.__repr__()
+        assert not self.game.four_on_a_diagonal(self.game.board)
 
     @classmethod
-    def test_a_game(self):
-        print 'Testing the game'
-
-        # print self.game.current_player
-        self.game.player_move(0) # player 1
+    def test_four_on_a_diagonal_with_a_game(self):
+        
+        assert self.game.current_player == 1
+        self.game.player_move(0)
         assert not self.game.has_won(self.game.current_player)
         
-        # print self.game.current_player
-        self.game.player_move(1) # player 2
-        print self.game.current_player
+        assert self.game.current_player == 2
+        self.game.player_move(1) 
+        assert self.game.current_player == 1
         assert not self.game.has_won(self.game.current_player)
         
-        print self.game.current_player
         self.game.player_move(2)
         assert not self.game.has_won(self.game.current_player)
         
@@ -252,12 +189,14 @@ class testC4Game(unittest.TestCase):
         
         self.game.player_move(0)
         assert not self.game.has_won(self.game.current_player)
+
         self.game.player_move(1)
         assert not self.game.has_won(self.game.current_player)
+
         self.game.player_move(0)
         assert not self.game.has_won(self.game.current_player)
+
         self.game.player_move(0)
-        self.game.__repr__()
 
 ##        Player 2 won!
 ##        Board move: 10
@@ -270,10 +209,7 @@ class testC4Game(unittest.TestCase):
 ##        -------------
         
         assert self.game.has_won(2)
-        print self.game.has_won(2)
-        print self.game.has_won(1)
 
-    # @unittest.expectedFailure("This is a bug")
     def test_bug_001_game_quits_after_second_move(self):
         self.game.player_move(3)
         assert not self.game.has_won(1)
