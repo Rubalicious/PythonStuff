@@ -281,7 +281,7 @@ class testC4Game(unittest.TestCase):
         assert not self.game.has_won(2)
 
 def main(argv):
-    unittest.main(argv=argv, verbosity=0, failfast=False)
+    unittest.main(argv=argv, verbosity=2, failfast=False)
 
 if __name__=='__main__':
     unittest.main()

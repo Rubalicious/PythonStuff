@@ -47,7 +47,6 @@ class C4Game():
         won = False
         
         # checking if there exists 4 tokens in any row
-        
         for row in self.board:
             if self.four_in_a_row(row, player):
                 won = True
