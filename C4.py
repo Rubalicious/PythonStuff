@@ -15,13 +15,14 @@ class C4Game():
         self.current_player = 1
 
     def __repr__(self):
-        print "\n\tBoard move: ", self.move_count
+        print
         for row in self.board:
             print '\t',
             for entry in row:
                 print entry,
             print
         print '\t-------------\n'
+        print "\tBoard move: %d \n"% self.move_count
 
     def move_sequence(self, sequence):
         for x in sequence:
@@ -60,7 +61,7 @@ class C4Game():
         x,y = 6,7
 
         a = np.array(a)
-        diags = [a[::-1,:].diagonal(i) for i in xrange(x+1+3, y-3)]
+        diags = [a[::-1,:].diagonal(i) for i in xrange(-x+1+3, y-3)]
         diags.extend(a.diagonal(i) for i in xrange(y-1-3, -x+3,-1))
 
         for el in diags:

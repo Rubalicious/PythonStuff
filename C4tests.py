@@ -216,6 +216,21 @@ class testC4Game(unittest.TestCase):
         self.game.player_move(2)
         assert not self.game.has_won(2)
 
+    def test_bug_002_game_doesnt_quit_on_diagonal_win(self):
+
+        self.game.move_sequence([0,1,2,2,2,4,3,3,4,3,4,3,3,4])
+        
+        # Player 2 wins here
+            # Board move:  14
+            # 0 0 0 0 0 0 0
+            # 0 0 0 1 0 0 0
+            # 0 0 0 2 2 0 0
+            # 0 0 1 2 1 0 0
+            # 0 0 2 2 1 0 0
+            # 1 2 1 1 2 0 0
+            # -------------
+        assert self.game.has_won(2)
+
 def main(argv):
     unittest.main(argv=argv, verbosity=2, failfast=False)
 
