@@ -24,7 +24,7 @@ for r in range(500):
     gre = r/500.0
     blu = r/500.0
     if r%3 == 0:
-        bob.pencolor((1-red,1-gre,0))
+        bob.pencolor((1,1-gre,0))
     elif r%3 == 1:
         bob.pencolor((1,1,0))
     else:
