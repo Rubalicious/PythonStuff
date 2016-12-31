@@ -10,6 +10,6 @@ def gcd(a,b):
     return b
 
 def main(a,b):
-    return gcd(a,b)
+    print gcd(a,b)
 
-main(sys.argv[1], sys.argv[2])
+main(int(sys.argv[1]), int(sys.argv[2]))

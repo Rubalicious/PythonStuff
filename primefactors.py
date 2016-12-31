@@ -18,7 +18,8 @@ def get_prime_factors(num):
 			factors.append(primf)
 		index += 1
 	
-	return [int(k) for k in factors]
+	if not [int(k) for k in factors]: return [1, num]
+	else: 	return [int(k) for k in factors]
 	# print('\n'.join('{}: {}'.format(*k) for k in enumerate(factors)))
 
 # returns an ordered list of multiplicity of each prime number
@@ -48,7 +49,5 @@ def main(num):
 	
 	print '\n',sums
 
-	
-
 if __name__ == '__main__':
-	main(int(sys.argv[1]))
+	print get_prime_factors(int(sys.argv[1]))

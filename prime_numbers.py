@@ -66,3 +66,4 @@ def main(n=1000,lower=2):
 
 if __name__ == '__main__':
     main(n)
+    # print get_primes(sys.argv[1])
