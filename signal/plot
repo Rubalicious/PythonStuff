@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#
+# Author: Ruby Abrams
+# Description:
+#    This will generate the data and plot it
+#
+
+# this is important for linking gnu lib to project
+gcc -Wall -lgsl -lgslcblas signal.c
+./a.out > data
+python plot_signal.py
